@@ -1,4 +1,8 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 package com.fincore.app;
+
+
 
 /**
  * SavingsAccount class representing a savings account with interest functionality.
@@ -11,6 +15,25 @@ public class SavingsAccount extends Account {
     
     // Private field for interest rate
     private double interestRate;
+    @Test
+    void testApplyInerestIncreasesBalance(){
+        SavingsAccount account = new SavingsAccount("Alex Doe", 1000.00, 0.05);
+        account.applyInterest();
+        assert.Equals(1050.00, account.getBalance(), 0.001);
+
+    }
+    @Test
+    void testSetValidInterestRate(){
+        SavingsAccount account = new SavingsAccount("Alex Doe", 1000.00, 0.05);
+        account.setInterestRate(0.10);
+        assertEquals(0.10, account.getInterestRate());
+    }
+    @Test
+    void testToStringFormat(){
+        SavingsAccount account = new SavingsAccount("Alex Doe", 1000.00, 0.05);
+        String expected = "SavingsAccount[holder=Alex Doe, balance=£1000.00, interestRate=5.00%]";
+        assertEquals(expected, account.toString());
+    }
     
     /**
      * Constructor to initialize a SavingsAccount with account holder name, 
@@ -79,3 +102,4 @@ public class SavingsAccount extends Account {
                ", interestRate=" + String.format("%.2f%%", interestRate * 100) + "]";
     }
 }
+
