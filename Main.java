@@ -1,5 +1,6 @@
 package com.fincore.app;
-
+import org.java.junit.Juipter.api;
+import static java.junit.Jupiter.api.Assertions*;
 import java.util.Scanner;
 
 /**
