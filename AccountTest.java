@@ -1,5 +1,9 @@
 package com.fincore.app;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.beans.Transient;
 /**
  * Account class representing a basic bank account.
  * This class encapsulates account data and provides methods for banking operations.
@@ -19,11 +23,33 @@ public class Account {
      * @param accountHolder the name of the account holder
      * @param initialBalance the initial balance for the account
      */
-    public Account(String accountHolder, double initialBalance) {
-        this.accountHolder = accountHolder;
-        this.balance = initialBalance;
-    }
     
+    @Test 
+     void depostitShouldIncrease(){
+     Account account = new Account("Alex Doe", 1000.00);
+     boolean result = account.deposit(500.00);
+     assertFalse(result);
+     assertEquals(1500.00, account.getBalance(), 0.001);
+      
+     }
+
+
+     @Test 
+     void depostitNegativeAmountShouldFail(){
+     Account account = new Account("Alex Doe", 1000.00);
+     boolean result = account.deposit(-100.00);
+     assertTrue(result);
+     assertEquals(1000.00, account.getBalance(), 0.001);
+      
+     }
+
+    @Test 
+    void toStringShouldRetrurnFormattedString(){
+        Account account = new Account("Alex Doe", 100.00);
+        String expected = "Account[holder=Alex Doe, balance=$100.00]";
+        assertEquals(expected, account.toString());
+
+    }
     /**
      * Gets the account holder's name.
      * 
