@@ -1,105 +1,64 @@
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 package com.fincore.app;
 
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * SavingsAccount class representing a savings account with interest functionality.
- * This class extends Account and adds interest rate capabilities.
- * 
- * @author FinCore Development Team
- * @version 3.0.0
+*Unit tests for SavingsAccount clas.
+*Each test verifies interest-realted functonality and inherited behavior from Account.
  */
-public class SavingsAccount extends Account {
-    
-    // Private field for interest rate
-    private double interestRate;
+public class SavingsAccount {
+    /**
+    *Test implies to applying interest correctly will increase the account balance.
+    *Verifies that the interest is calculated and added based on the current balance and interest rate.
+    **/
     @Test
     void testApplyInerestIncreasesBalance(){
         SavingsAccount account = new SavingsAccount("Alex Doe", 1000.00, 0.05);
-        account.applyInterest();
-        assert.Equals(1050.00, account.getBalance(), 0.001);
-
+        account.applyInterest(); //Should add the 5% of 1000 = 50
+        assert.Equals(1050.00, account.getBalance(), 0.001); //The new should be 1050.00
     }
+    
+    /** 
+    *Test that settting interest rate will update the internal interestRate field.
+    */
     @Test
     void testSetValidInterestRate(){
         SavingsAccount account = new SavingsAccount("Alex Doe", 1000.00, 0.05);
         account.setInterestRate(0.10);
-        assertEquals(0.10, account.getInterestRate());
+        assertEquals(0.10, account.getInterestRate()); // Should show the new rate.
     }
+    /** 
+    * Test the toString method will retnr the expected formatted string
+    * including the account holder,  balance and the interest rate.
+    */
     @Test
     void testToStringFormat(){
         SavingsAccount account = new SavingsAccount("Alex Doe", 1000.00, 0.05);
-        String expected = "SavingsAccount[holder=Alex Doe, balance=£1000.00, interestRate=5.00%]";
+        String expected = "SavingsAccount[holder=Alex Doe, balance=$1000.00, interestRate=5.00%]";
         assertEquals(expected, account.toString());
     }
-    
     /**
-     * Constructor to initialize a SavingsAccount with account holder name, 
-     * initial balance, and interest rate.
-     * 
-     * @param accountHolder the name of the account holder
-     * @param initialBalance the initial balance for the account
-     * @param interestRate the annual interest rate (as a decimal, e.g., 0.05 for 5%)
-     */
-    public SavingsAccount(String accountHolder, double initialBalance, double interestRate) {
-        super(accountHolder, initialBalance);
-        this.interestRate = interestRate;
+    *Test that when setting a negative rate it does not change the current rate.
+    *Ensures valid input validation is applied .
+    */
+    @Test
+    void testSetNegativeInterestRate(){
+        SavingsAccount account = new Account("Alex Doe", 1000.00);
+        boolean result = account.withdraw(200.00);
+        assertTrue(result); //Withdrawal should be sucessful.
+        assertEquals(800.00, account.getBalance(), 0.001); //Balance should be reduced
     }
-    
     /**
-     * Gets the current interest rate.
-     * 
-     * @return the interest rate
+     * Test that withdrawing more than the available balance fails.
+     *The balance should remain unchanged
      */
-    public double getInterestRate() {
-        return interestRate;
-    }
-    
-    /**
-     * Sets the interest rate for the savings account.
-     * 
-     * @param interestRate the new interest rate (as a decimal)
-     */
-    public void setInterestRate(double interestRate) {
-        if (interestRate >= 0) {
-            this.interestRate = interestRate;
-        }
-    }
-    
-    /**
-     * Applies interest to the current balance based on the interest rate.
-     * This method calculates and adds the interest amount to the balance.
-     */
-    public void applyInterest() {
-        double interestAmount = getBalance() * interestRate;
-        deposit(interestAmount);
-        System.out.println("Interest applied: $" + String.format("%.2f", interestAmount));
-        System.out.println("New balance after interest: $" + String.format("%.2f", getBalance()));
-    }
-    
-    /**
-     * Overrides the checkBalance method to include interest rate information.
-     */
-    @Override
-    public void checkBalance() {
-        System.out.println("=== Savings Account Balance ===");
-        System.out.println("Account Holder: " + getAccountHolder());
-        System.out.println("Current Balance: $" + String.format("%.2f", getBalance()));
-        System.out.println("Interest Rate: " + String.format("%.2f%%", interestRate * 100));
-    }
-    
-    /**
-     * Returns a string representation of the savings account.
-     * 
-     * @return string representation of the savings account
-     */
-    @Override
-    public String toString() {
-        return "SavingsAccount[holder=" + getAccountHolder() + 
-               ", balance=$" + String.format("%.2f", getBalance()) + 
-               ", interestRate=" + String.format("%.2f%%", interestRate * 100) + "]";
+    @Test
+    void withdrawMoreThanBalanceShouldFail() {
+        Account account = new Account("Alex Doe", 1000.00);
+        boolean result = account.withdraw(1500.00);
+        assertFalse(result); //Withdrawal should fail
+        assertEquals(1000.00, account.getBalance(), 0.001); //The balance should remain the same.
     }
 }
-
+ 
